@@ -1,5 +1,6 @@
 package com.mnemora.backend.service;
 
+import com.mnemora.backend.exception.EntryNotFoundException;
 import com.mnemora.backend.dto.DiaryEntryRequest;
 import com.mnemora.backend.entity.DiaryEntry;
 import com.mnemora.backend.repository.DiaryEntryRepository;
@@ -41,7 +42,7 @@ public class DiaryEntryService {
     // READ ONE — throws an exception if not found, which we'll handle in the controller
     public DiaryEntry getEntryById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Entry not found with id: " + id));
+                .orElseThrow(() -> new EntryNotFoundException("Entry not found with id: " + id));
     }
 
     // UPDATE — fetch existing entry, overwrite fields, save again
