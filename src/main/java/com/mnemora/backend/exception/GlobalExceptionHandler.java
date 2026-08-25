@@ -48,4 +48,17 @@ public class GlobalExceptionHandler {
         // Returns HTTP 400 Bad Request with details on exactly which fields failed
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
+    // This catches cases where the request body is missing entirely,
+    // or isn't valid JSON at all (e.g. empty body, malformed syntax)
+    @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
+    public ResponseEntity<Map<String, Object>> handleUnreadableBody(
+            org.springframework.http.converter.HttpMessageNotReadableException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("error", "Bad Request");
+        body.put("message", "Request body is missing or malformed JSON");
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
 }
