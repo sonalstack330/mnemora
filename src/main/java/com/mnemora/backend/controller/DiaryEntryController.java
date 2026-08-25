@@ -1,5 +1,6 @@
 package com.mnemora.backend.controller;
 
+import com.mnemora.backend.dto.TranscriptRequest;
 import com.mnemora.backend.dto.DiaryEntryRequest;
 import com.mnemora.backend.entity.DiaryEntry;
 import com.mnemora.backend.service.DiaryEntryService;
@@ -70,5 +71,12 @@ public class DiaryEntryController {
     @GetMapping("/search")
     public ResponseEntity<List<DiaryEntry>> searchEntries(@RequestParam String q) {
         return ResponseEntity.ok(service.searchEntries(q));
+    }
+    // POST /api/entries/from-transcript
+    // Takes a raw transcript, runs it through Gemini, saves the structured result
+    @PostMapping("/from-transcript")
+    public ResponseEntity<DiaryEntry> createFromTranscript(@Valid @RequestBody TranscriptRequest request) {
+        DiaryEntry created = service.createEntryFromTranscript(request.getTranscript());
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 }
