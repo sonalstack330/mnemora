@@ -31,3 +31,7 @@ that turns messy spoken thoughts into a properly organized, searchable personal 
 ## Status
 
 🚧 In development — backend skeleton in progress.
+- ✅ Backend CRUD (Create, Read, Update, Delete, Search) fully working and tested in Postman
+- ✅ Global exception handling (404, 400, 500) with clean JSON responses
+- ✅ Gemini API integration working — raw transcript successfully structured into title, content, mood, and tags
+- ⏭️ Next: Android app (SpeechRecognizer + UI + API integration)
