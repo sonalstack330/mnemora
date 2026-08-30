@@ -14,4 +14,4 @@
 .cxx
 local.properties
 *.apk
-*.aab
+*.aab/.idea/deviceManager.xml
