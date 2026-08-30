@@ -1,4 +1,4 @@
-*.iml
+﻿*.iml
 .gradle
 /local.properties
 /.idea/caches
@@ -14,4 +14,5 @@
 .cxx
 local.properties
 *.apk
-*.aab/.idea/deviceManager.xml
+*.aab
+.idea/deviceManager.xml
