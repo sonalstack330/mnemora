@@ -1,8 +1,4 @@
 dependencies {
     // ... existing dependencies stay as they are ...
 
-    // Retrofit - handles HTTP requests to our Spring Boot backend
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
-    // Converts JSON responses into Java objects automatically (uses Gson library)
-    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 }
