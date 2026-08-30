@@ -3,12 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Declares that this app may need microphone access -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <application
+    <applications
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -29,6 +28,6 @@
 
         </activity>
 
-    </application>
+    </applications>
 
 </manifest>
