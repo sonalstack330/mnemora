@@ -16,6 +16,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.mnemora.android.model.DiaryEntry;
+import com.mnemora.android.model.TranscriptRequest;
+import com.mnemora.android.network.MnemoraApiService;
+import com.mnemora.android.network.RetrofitClient;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -103,25 +112,20 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onResults(Bundle results) {
-                // This is the important one - called when transcription succeeds.
-                // Results come back as a list of possible matches, ranked by confidence.
                 ArrayList<String> matches = results.getStringArrayList(
                         SpeechRecognizer.RESULTS_RECOGNITION);
 
                 if (matches != null && !matches.isEmpty()) {
-                    // Take the top (most confident) match
                     String transcript = matches.get(0);
                     statusText.setText("Transcript: " + transcript);
 
-                    // This is where we'll send the transcript to our backend's
-                    // /api/entries/from-transcript endpoint - next step
+                    // Send the transcript to our backend to be structured by Gemini
+                    sendTranscriptToBackend(transcript);
                 } else {
                     statusText.setText("No speech detected, try again");
+                    recordButton.setEnabled(true);
                 }
-
-                recordButton.setEnabled(true);
             }
-
             @Override
             public void onPartialResults(Bundle partialResults) {
                 // Called with interim results while still listening -
@@ -178,5 +182,48 @@ public class MainActivity extends AppCompatActivity {
         if (speechRecognizer != null) {
             speechRecognizer.destroy();
         }
+    }
+    // Sends the raw transcript to our Spring Boot backend, which runs it through
+    // Gemini and returns a structured diary entry
+    private void sendTranscriptToBackend(String transcript) {
+        statusText.setText("Saving to diary...");
+
+        // Get our configured API service (Retrofit-generated implementation)
+        MnemoraApiService apiService = RetrofitClient.getApiService();
+
+        // Build the request body matching what our backend expects
+        TranscriptRequest request = new TranscriptRequest(transcript);
+
+        // Create the actual network call, but don't execute it yet
+        Call<DiaryEntry> call = apiService.createEntryFromTranscript(request);
+
+        // enqueue() runs this call ASYNCHRONOUSLY - meaning it happens in the
+        // background without freezing the UI. onResponse/onFailure are called
+        // automatically once the network call finishes, whichever way it goes.
+        call.enqueue(new Callback<DiaryEntry>() {
+            @Override
+            public void onResponse(Call<DiaryEntry> call, Response<DiaryEntry> response) {
+                // isSuccessful() checks for a 2xx status code (like 201 Created)
+                if (response.isSuccessful() && response.body() != null) {
+                    DiaryEntry savedEntry = response.body();
+                    statusText.setText("Saved: " + savedEntry.getTitle());
+
+                    // Later: this is where we'll refresh the RecyclerView list
+                    // to show the new entry immediately
+                } else {
+                    // Backend responded, but with an error status (400, 404, 500, etc.)
+                    statusText.setText("Failed to save entry (error " + response.code() + ")");
+                }
+                recordButton.setEnabled(true);
+            }
+
+            @Override
+            public void onFailure(Call<DiaryEntry> call, Throwable t) {
+                // This fires for network-level failures - no internet, backend
+                // not running, wrong IP/URL, timeout, etc.
+                statusText.setText("Network error: " + t.getMessage());
+                recordButton.setEnabled(true);
+            }
+        });
     }
 }
