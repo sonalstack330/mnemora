@@ -13,7 +13,7 @@ public class RetrofitClient {
     // If testing on a REAL physical device instead, replace this with
     // your computer's actual local network IP address (e.g. 192.168.1.5),
     // since the phone and computer need to be on the same Wi-Fi network.
-    private static final String BASE_URL = "http://10.0.2.2:8080/";
+    private static final String BASE_URL = "http://10.121.216.71:8080/";
 
     private static Retrofit retrofit = null;
 
