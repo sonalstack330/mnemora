@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Primary brand color - used for buttons, accents -->
-    <color name="mnemora_primary">#6C63FF</color>
-    <!-- Darker variant, used for pressed states or status bar -->
-    <color name="mnemora_primary_dark">#4A42D4</color>
-    <!-- Soft background tint -->
-    <color name="mnemora_background">#F7F6FB</color>
+    <!-- Primary - soft blush pink, main buttons and accents -->
+    <color name="mnemora_primary">#F7A6C4</color>
+    <!-- Darker pink for pressed states / status bar -->
+    <color name="mnemora_primary_dark">#E8789F</color>
+    <!-- Warm cream background - soft, cozy diary feel -->
+    <color name="mnemora_background">#FFF6F0</color>
     <!-- Card/surface color for entry items -->
     <color name="mnemora_surface">#FFFFFF</color>
-    <!-- Primary text color -->
-    <color name="mnemora_text_primary">#2D2A4A</color>
+    <!-- Primary text - deep plum, soft but readable -->
+    <color name="mnemora_text_primary">#5C4552</color>
     <!-- Secondary/muted text -->
-    <color name="mnemora_text_secondary">#8A8699</color>
-    <!-- Accent for mood tags, subtle highlights -->
-    <color name="mnemora_accent">#FFB4A2</color>
+    <color name="mnemora_text_secondary">#B195A2</color>
+    <!-- Accent - soft lavender, used for mood tags and highlights -->
+    <color name="mnemora_accent">#D9B8F5</color>
+    <!-- Extra accent - buttery yellow, for little pops of joy -->
+    <color name="mnemora_highlight">#FFE29A</color>
 
     <!-- Keep these default ones - Android Studio's template may reference them elsewhere -->
     <color name="purple_200">#FFBB86FC</color>
